@@ -36,7 +36,7 @@ export default class ExpressServer {
         this.routes(app);
       }
       // Start server
-      http.createServer(app).listen(port, welcome(port, dbName!, dbHost!));
+      http.createServer(app).listen(port, welcome(dbName!, dbHost!));
       return app;
     } catch (err) {
       l.error(err);
