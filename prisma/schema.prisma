@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Report {
+  id           String     @id @default(uuid()) @db.UniqueIdentifier
+  reporterId   String     @db.UniqueIdentifier
+  targetType   String
+  targetId     String     @db.UniqueIdentifier
+  reason       String
+  details      String?
+  status       String     @default("open")
+  createdAt    DateTime   @default(now())
+  processedAt  DateTime?
+
+}

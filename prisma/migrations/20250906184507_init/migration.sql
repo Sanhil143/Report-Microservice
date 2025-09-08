@@ -1,0 +1,30 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[Report] (
+    [id] UNIQUEIDENTIFIER NOT NULL,
+    [reporterId] UNIQUEIDENTIFIER NOT NULL,
+    [targetType] NVARCHAR(1000) NOT NULL,
+    [targetId] UNIQUEIDENTIFIER NOT NULL,
+    [reason] NVARCHAR(1000) NOT NULL,
+    [details] NVARCHAR(1000),
+    [status] NVARCHAR(1000) NOT NULL CONSTRAINT [Report_status_df] DEFAULT 'open',
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [Report_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [processedAt] DATETIME2,
+    CONSTRAINT [Report_pkey] PRIMARY KEY CLUSTERED ([id])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH
