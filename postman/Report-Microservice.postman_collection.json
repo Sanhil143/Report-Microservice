@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "Report Microservice",
+    "description": "Handle report service - create, list, and action reports",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "{{baseUrl}}"
+    },
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "reportId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Create Report",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"targetType\": \"post\",\n  \"targetId\": \"00000000-0000-0000-0000-000000000001\",\n  \"reason\": \"Spam content\",\n  \"details\": \"Optional additional details\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/createReport",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "createReport"]
+        },
+        "description": "Create a report. Requires Bearer token. targetType: 'post' | 'user'"
+      }
+    },
+    {
+      "name": "List All Reports",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/all",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "all"]
+        },
+        "description": "List all reports. Requires Admin Bearer token."
+      }
+    },
+    {
+      "name": "List Reports (filter by status)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/auth/all?status=open",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "all"],
+          "query": [
+            {
+              "key": "status",
+              "value": "open",
+              "description": "open | closed | actioned"
+            }
+          ]
+        },
+        "description": "List reports filtered by status. Requires Admin Bearer token."
+      }
+    },
+    {
+      "name": "Action Report - Close",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"close\",\n  \"notes\": \"Resolved - no violation found\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/{{reportId}}/action",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "{{reportId}}", "action"]
+        },
+        "description": "Close a report. Requires Admin Bearer token."
+      }
+    },
+    {
+      "name": "Action Report - Ban",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"ban\",\n  \"notes\": \"User banned for policy violation\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/{{reportId}}/action",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "{{reportId}}", "action"]
+        },
+        "description": "Ban action on report. Requires Admin Bearer token."
+      }
+    },
+    {
+      "name": "Action Report - Warn",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"action\": \"warn\",\n  \"notes\": \"Warning issued to user\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/{{reportId}}/action",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "{{reportId}}", "action"]
+        },
+        "description": "Warn action on report. Requires Admin Bearer token."
+      }
+    }
+  ]
+}
